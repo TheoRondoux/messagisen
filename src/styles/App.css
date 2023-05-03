@@ -1,0 +1,47 @@
+.app-header{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height:50px;
+}
+
+.app-header h2{
+  margin: 0;
+}
+
+.app{
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh);
+}
+
+#conv-list{
+  display: block;
+  width: 200px;
+  background-color: red;
+}
+
+#show-conv{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* height: 80vh; */
+}
+
+#messages-list{
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  margin: 10px;
+}
+
+.mess-auth{
+  text-align: end;
+  margin-right: 10px;
+}
+
+.mess-rec{
+  text-align: start;
+  margin-left: 10px;
+}
