@@ -16,10 +16,17 @@
   height: calc(100vh);
 }
 
+#conv-header{
+  margin: 10px;
+}
+
 #conv-list{
   display: block;
-  width: 200px;
-  background-color: red;
+  width: 25%;
+  background-color: white;
+  border-right: solid 2px #dedede;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 #show-conv{
@@ -30,10 +37,10 @@
 }
 
 #messages-list{
-  display: flex;
+  display: none;
   flex-direction: column;
   overflow-y: scroll;
-  margin: 10px;
+  margin: 10px 10px 60px 10px;
 }
 
 .mess-auth{
@@ -44,4 +51,57 @@
 .mess-rec{
   text-align: start;
   margin-left: 10px;
+}
+
+#conv-footer{
+  position: fixed;
+  bottom: 0;
+  display: none;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% - 25%);
+  padding: 10px 0 10px 0;
+}
+
+#mess-input{
+  width: 30%;
+  height: 50px;
+  font-size: 1.3em;
+  background-color: #f3f3f3;
+  border: none;
+  outline: none;
+  padding: 0 25px 0 25px;
+  border-radius: 50px 0 0 50px;
+}
+
+#send-message-btn{
+  display: flex;
+  flex-direction: row;
+  background-color: #dedede;
+  width: 50px;
+  height: 50px;
+  border: none;
+  outline: none;
+  border-radius: 0 50% 50% 0;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 250ms ease-in;
+}
+
+#send-message-btn svg{
+  transform: translateX(-2px);
+}
+
+#send-message-btn > svg path{
+  transition: stroke 250ms ease-in;
+}
+
+#send-message-btn:hover{
+  cursor: pointer;
+  background-color: #e70a18;
+}
+
+#send-message-btn:hover > svg path{
+  stroke: white;
 }
