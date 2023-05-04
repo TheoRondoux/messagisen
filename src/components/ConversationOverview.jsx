@@ -1,13 +1,14 @@
 import React from 'react';
+import "../styles/ConversationOverview.css";
 
-function Conversation(props){
+function ConversationOverview(props){
 
     return(
         <div id={props.id} className="conv-overview" onClick={props.onClick}>
             <h3>{props.name}</h3>
-            <p>{props.last_mess}</p>
+            <p>{props.last_message}</p>
         </div>
     )
 }
 
-export default Conversation;
+export default ConversationOverview;

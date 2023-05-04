@@ -1,0 +1,23 @@
+.conv-overview{
+    /* border-bottom: solid 2px #dedede; */
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.conv-overview h3{
+    margin: 0;
+}
+
+.conv-overview p{
+    margin: 0;
+}
+
+.conv-overview.selected{
+    background-color: #e70a1912;
+}
+
+.conv-overview:hover{
+    background-color: #e70a190a;
+    cursor: pointer;
+}
