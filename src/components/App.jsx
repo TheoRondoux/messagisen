@@ -32,6 +32,10 @@ class Conversation{
   getOwnerId(){
     return this.ownerId;
   }
+
+  setLastMessageId(messageId){
+    this.lastMessageId = messageId;
+  }
 }
 
 /**
@@ -96,9 +100,9 @@ function handleSubmit(message, setMessage, convId, senderId){
  * @param {Function} setConvsId is the state function to update the id list
  */
 function getConvsId(senderId, setConvsId){
-  var tempConvsId = []
   const getUserConvQ = query(collection(firestore, "added_users"), where("userId", "==", senderId));
   onSnapshot(getUserConvQ, (querySnapshot) => {
+    var tempConvsId = [];
     querySnapshot.forEach((doc) => {
       tempConvsId.push(doc.data().convId);
     });
@@ -135,7 +139,7 @@ async function readConvDetails(convId){
  * @param {String} convId is the conversation to consult
  * @param {Function} setMessages is the state function to set all the messages to display 
  */
-async function getMessages(convId, setMessages){
+function getMessages(convId, setMessages){
   const q = query(collection(firestore, "messages"), where("convId", "==", convId));
   const unsubscribe = onSnapshot(q, (querySnapshot) => {
     var messages = [];
@@ -150,6 +154,14 @@ async function getMessages(convId, setMessages){
   return unsubscribe;
 }
 
+function getMessage(convId, convs){
+  console.log(convs);
+  const unsub = onSnapshot(doc(firestore, "conversation", convId), (doc) => {
+    console.log(doc.data().lastMessage);
+  });
+  return unsub; 
+}
+
 function showConv(){
   document.querySelector("#messages-list").style.display = "flex";
   document.querySelector("#conv-footer").style.display = "flex";
@@ -157,6 +169,7 @@ function showConv(){
 
 function App() {
   var unsub = null;
+  var convUnsubs = [];
 
   const senderId = "Admin";
 
@@ -166,6 +179,25 @@ function App() {
   const [convTitle, setConvTitle] = useState("");
   const [convsId, setConvsId] = useState([]);
   const [convs, setConvs] = useState([]);
+
+  useEffect(() => {
+    getConvsId(senderId, setConvsId);
+  }, []);
+
+  useEffect(() => {
+    var convsProm = getConvsProm(convsId);
+    convUnsubs.forEach((convUnsub) => {
+      convUnsub();
+    });
+    Promise.all(convsProm).then((array) => {
+      var tempConvs = [];
+      for(var i = 0; i < array.length; i++){
+        tempConvs.push(new Conversation(convsId[i], array[i].lastMessage, array[i].name, array[i].ownerId))
+        convUnsubs.push(getMessage(convsId[i], convs));
+      }
+      setConvs(tempConvs);
+    });
+  }, [convsId]);
   
   useEffect(() => {
     if (unsub !== null){
@@ -179,22 +211,7 @@ function App() {
   }, [messages]);
 
   useEffect(() => {
-    getConvsId(senderId, setConvsId);
-  }, [])
 
-  useEffect(() => {
-    var convsProm = getConvsProm(convsId);
-    Promise.all(convsProm).then((array) => {
-      var tempConvs = [];
-      for(var i = 0; i < array.length; i++){
-        tempConvs.push(new Conversation(convsId[i], array[i].lastMessage, array[i].name, array[i].ownerId))
-      }
-      setConvs(tempConvs);
-    });
-  }, [convsId]);
-
-  useEffect(() => {
-    console.log(convs);
   }, [convs])
 
   return (
